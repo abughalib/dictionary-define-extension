@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dictionary Define Settings</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 24px;
+      max-width: 500px;
+      color: #333;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .section {
+      margin-bottom: 30px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 20px;
+    }
+
+    .status-box {
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    button:disabled {
+      background: #ccc;
+    }
+
+    .note {
+      font-size: 0.85em;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    #download-progress {
+      width: 100%;
+      height: 20px;
+      background: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+      margin-top: 10px;
+    }
+
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #28a745;
+      transition: width 0.3s;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Dictionary Setup</h2>
+
+  <div class="section">
+    <h3>1. Offline Dictionary</h3>
+    <p>To use lookups without internet, download the core dictionary (approx. 28MB).</p>
+    <div id="offline-status" class="status-box">Status: Not Downloaded</div>
+    <button id="download-btn">Download Offline Dictionary</button>
+    <button id="remove-btn" style="background: #dc3545; display: none;">Remove Dictionary</button>
+    <div id="download-progress">
+      <div id="progress-bar"></div>
+    </div>
+    <div id="offline-msg" class="note">Searching offline is faster and works anywhere.</div>
+  </div>
+
+  <div class="section">
+    <h3>2. Search Options</h3>
+    <div>
+      <input type="checkbox" id="online-fallback" checked>
+      <label for="online-fallback">Fallback to Online Search</label>
+      <div class="note">If a word isn't found offline, we'll check the internet.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>3. Keyboard Shortcut</h3>
+    <div>
+      <input type="checkbox" id="enable-shortcut" checked>
+      <label for="enable-shortcut">Enable keyboard shortcut to define selected word</label>
+    </div>
+    <div style="margin-top: 10px;">
+      <button id="change-shortcut-btn" style="background: #6c757d;">Manage Shortcuts</button>
+      <span class="note" id="shortcut-display" style="margin-left: 8px;"></span>
+    </div>
+  </div>
+
+  <div id="status"></div>
+  <script src="options.js"></script>
+</body>
+
+</html>

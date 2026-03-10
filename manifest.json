@@ -1,0 +1,77 @@
+{
+  "manifest_version": 3,
+  "name": "Dictionary Define",
+  "version": "1.0",
+  "description": "Adds a 'Define' option to the context menu to quickly look up words.",
+  "permissions": [
+    "contextMenus",
+    "scripting",
+    "activeTab",
+    "storage",
+    "unlimitedStorage"
+  ],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "host_permissions": [
+    "https://api.dictionaryapi.dev/*",
+    "https://github.com/*",
+    "https://objects.githubusercontent.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'none';"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "scripts": [
+      "sql-wasm.js",
+      "background.js"
+    ]
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "sql-wasm.wasm"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "overlay.css"
+      ]
+    }
+  ],
+  "action": {
+    "default_title": "Dictionary Define"
+  },
+  "commands": {
+    "define-selection": {
+      "suggested_key": {
+        "default": "Ctrl+Space",
+        "mac": "Command+Space"
+      },
+      "description": "Define the selected word"
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "dictionary-define@example.com"
+    }
+  }
+}

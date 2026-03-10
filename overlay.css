@@ -1,0 +1,2 @@
+/* Styles are currently injected via Shadow DOM in content.js to ensure maximum isolation. 
+   This file is required by manifest.json but can be left empty or used for root-level styling if needed. */
