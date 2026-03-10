@@ -3,7 +3,7 @@
   "name": "Dictionary Define",
   "short_name": "Dict Define",
   "version": "1.0",
-  "description": "Adds a 'Define' option to the context menu to quickly look up words.",
+  "description": "Instantly define words without leaving the page. Get quick inline popup definitions via keyboard shortcuts, right-click, or offline.",
   "author": "Abu",
   "homepage_url": "https://abughalib.github.io/dictionary-define-extension",
   "permissions": [
@@ -72,7 +72,12 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "dictionary-define@abughalib.github.io"
+      "id": "dictionary-define@abughalib.github.io",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
     }
   }
 }

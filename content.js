@@ -1,13 +1,3 @@
-function escapeHTML(str) {
-  if (!str) return "";
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
 browser.runtime.onMessage.addListener((message) => {
   if (message.action === "showDefinition") {
     displayDefinition(message.word);
@@ -169,29 +159,62 @@ async function displayDefinition(word) {
   container.style.left = left + "px";
 
   const resultsDiv = overlay.shadowRoot.getElementById("results");
-  const safeWord = escapeHTML(word);
-  resultsDiv.innerHTML = `<div class="loading">Searching for "${safeWord}"...</div>`;
+
+  // Safe loading text
+  resultsDiv.innerHTML = "";
+  let loadingDiv = document.createElement("div");
+  loadingDiv.className = "loading";
+  loadingDiv.textContent = `Searching for "${word}"...`;
+  resultsDiv.appendChild(loadingDiv);
 
   try {
     const data = await browser.runtime.sendMessage({ action: "lookup", word: word });
 
     if (!data) throw new Error("Word not found");
 
-    let html = `<div class="word">${escapeHTML(data.word)}</div>`;
-    if (data.phonetic) html += `<div class="phonetic">${escapeHTML(data.phonetic)}</div>`;
+    // Clear loading
+    resultsDiv.innerHTML = "";
+
+    let wordDiv = document.createElement("div");
+    wordDiv.className = "word";
+    wordDiv.textContent = data.word;
+    resultsDiv.appendChild(wordDiv);
+
+    if (data.phonetic) {
+      let phoneticDiv = document.createElement("div");
+      phoneticDiv.className = "phonetic";
+      phoneticDiv.textContent = data.phonetic;
+      resultsDiv.appendChild(phoneticDiv);
+    }
 
     data.meanings.forEach(meaning => {
-      html += `<div class="definition">
-        <span class="part-of-speech">${escapeHTML(meaning.partOfSpeech)}:</span>
-        <span class="definition-text">${escapeHTML(meaning.definitions[0].definition.trim())}</span>
-      </div>`;
+      let defDiv = document.createElement("div");
+      defDiv.className = "definition";
+
+      let posSpan = document.createElement("span");
+      posSpan.className = "part-of-speech";
+      posSpan.textContent = meaning.partOfSpeech + ":";
+      defDiv.appendChild(posSpan);
+
+      let textSpan = document.createElement("span");
+      textSpan.className = "definition-text";
+      textSpan.textContent = meaning.definitions[0].definition.trim();
+      defDiv.appendChild(textSpan);
+
+      resultsDiv.appendChild(defDiv);
     });
 
     const sourceLabel = data.source === "offline" ? "Offline dictionary" : "Free Dictionary API";
-    html += `<div class="source">Source: ${escapeHTML(sourceLabel)}</div>`;
+    let sourceDiv = document.createElement("div");
+    sourceDiv.className = "source";
+    sourceDiv.textContent = "Source: " + sourceLabel;
+    resultsDiv.appendChild(sourceDiv);
 
-    resultsDiv.innerHTML = html;
   } catch (err) {
-    resultsDiv.innerHTML = `<div class="error">Sorry, we couldn't find a definition for "${safeWord}".</div>`;
+    resultsDiv.innerHTML = "";
+    let errDiv = document.createElement("div");
+    errDiv.className = "error";
+    errDiv.textContent = `Sorry, we couldn't find a definition for "${word}".`;
+    resultsDiv.appendChild(errDiv);
   }
 }
