@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Dictionary Define",
+  "short_name": "Dict Define",
   "version": "1.0",
   "description": "Adds a 'Define' option to the context menu to quickly look up words.",
+  "author": "Abu",
+  "homepage_url": "https://abughalib.github.io/dictionary-define-extension",
   "permissions": [
     "contextMenus",
-    "scripting",
-    "activeTab",
     "storage",
     "unlimitedStorage"
   ],
@@ -71,7 +72,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "dictionary-define@example.com"
+      "id": "dictionary-define@abughalib.github.io"
     }
   }
 }
