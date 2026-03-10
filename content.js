@@ -1,3 +1,13 @@
+function escapeHTML(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 browser.runtime.onMessage.addListener((message) => {
   if (message.action === "showDefinition") {
     displayDefinition(message.word);
@@ -12,7 +22,7 @@ browser.runtime.onMessage.addListener((message) => {
 async function displayDefinition(word) {
   const selection = window.getSelection();
   let rect = { top: 20, left: 20, bottom: 20, right: 20, width: 0, height: 0 };
-  
+
   if (selection.rangeCount > 0) {
     rect = selection.getRangeAt(0).getBoundingClientRect();
   }
@@ -44,11 +54,12 @@ async function displayDefinition(word) {
       }
       header {
         background: #f4f4f4;
-        padding: 8px 12px;
+        padding: 3px;
         border-bottom: 1px solid #eee;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        font-size: 0.9em;
       }
       #close-btn {
         cursor: pointer;
@@ -56,9 +67,10 @@ async function displayDefinition(word) {
         background: none;
         border: none;
         font-size: 16px;
+        padding: 0 4px;
       }
       .content {
-        padding: 12px;
+        padding: 3px;
         overflow-y: auto;
       }
       .word {
@@ -126,12 +138,12 @@ async function displayDefinition(word) {
   }
 
   const container = overlay.shadowRoot.getElementById("overlay-container");
-  
+
   // Positioning Logic
   const PADDING = 10;
   const modalWidth = 350;
   const modalHeight = 250; // Reduced expected height for better positioning
-  
+
   // 1. Try Top (Priority)
   let top = rect.top - modalHeight - PADDING;
   let left = rect.left;
@@ -157,28 +169,29 @@ async function displayDefinition(word) {
   container.style.left = left + "px";
 
   const resultsDiv = overlay.shadowRoot.getElementById("results");
-  resultsDiv.innerHTML = `<div class="loading">Searching for "${word}"...</div>`;
+  const safeWord = escapeHTML(word);
+  resultsDiv.innerHTML = `<div class="loading">Searching for "${safeWord}"...</div>`;
 
   try {
     const data = await browser.runtime.sendMessage({ action: "lookup", word: word });
 
     if (!data) throw new Error("Word not found");
 
-    let html = `<div class="word">${data.word}</div>`;
-    if (data.phonetic) html += `<div class="phonetic">${data.phonetic}</div>`;
+    let html = `<div class="word">${escapeHTML(data.word)}</div>`;
+    if (data.phonetic) html += `<div class="phonetic">${escapeHTML(data.phonetic)}</div>`;
 
     data.meanings.forEach(meaning => {
       html += `<div class="definition">
-        <span class="part-of-speech">${meaning.partOfSpeech}:</span>
-        <span class="definition-text">${meaning.definitions[0].definition.trim()}</span>
+        <span class="part-of-speech">${escapeHTML(meaning.partOfSpeech)}:</span>
+        <span class="definition-text">${escapeHTML(meaning.definitions[0].definition.trim())}</span>
       </div>`;
     });
-    
+
     const sourceLabel = data.source === "offline" ? "Offline dictionary" : "Free Dictionary API";
-    html += `<div class="source">Source: ${sourceLabel}</div>`;
+    html += `<div class="source">Source: ${escapeHTML(sourceLabel)}</div>`;
 
     resultsDiv.innerHTML = html;
   } catch (err) {
-    resultsDiv.innerHTML = `<div class="error">Sorry, we couldn't find a definition for "${word}".</div>`;
+    resultsDiv.innerHTML = `<div class="error">Sorry, we couldn't find a definition for "${safeWord}".</div>`;
   }
 }

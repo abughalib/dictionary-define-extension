@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>Dictionary Define - Fallback</title>
@@ -10,7 +11,11 @@
       margin: 0;
       color: #333;
     }
-    h2 { margin-top: 0; }
+
+    h2 {
+      margin-top: 0;
+    }
+
     #search-box {
       width: 100%;
       padding: 8px;
@@ -19,21 +24,58 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    #results { margin-top: 16px; }
-    .word { font-size: 1.2em; font-weight: bold; margin-bottom: 4px; }
-    .phonetic { color: #666; font-style: italic; margin-bottom: 8px; }
-    .definition { margin-bottom: 12px; }
-    .part-of-speech { font-weight: bold; text-transform: capitalize; font-size: 0.9em; }
-    .loading { font-style: italic; color: #888; }
-    .error { color: #d32f2f; }
-    .note { font-size: 0.8em; color: #666; margin-bottom: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+
+    #results {
+      margin-top: 16px;
+    }
+
+    .word {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .phonetic {
+      color: #666;
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+
+    .definition {
+      margin-bottom: 12px;
+    }
+
+    .part-of-speech {
+      font-weight: bold;
+      text-transform: capitalize;
+      font-size: 0.9em;
+    }
+
+    .loading {
+      font-style: italic;
+      color: #888;
+    }
+
+    .error {
+      color: #d32f2f;
+    }
+
+    .note {
+      font-size: 0.8em;
+      color: #666;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
   </style>
 </head>
+
 <body>
   <h2>Dictionary Define</h2>
-  <div class="note">Inline overlay is unavailable on this page (e.g., PDF viewer). Use this window instead.</div>
+  <div class="note">Inline overlay is unavailable on this page</div>
   <input type="text" id="search-box" placeholder="Enter a word...">
   <div id="results"></div>
   <script src="fallback.js"></script>
 </body>
+
 </html>
